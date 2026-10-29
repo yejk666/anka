@@ -51,32 +51,13 @@ button:disabled{opacity:.4;pointer-events:none}
 <body>
 <div id="app"></div>
 <div id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 <script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
 const SAMPLE=[
-{id:1,type:'single',stem:'根据《生产安全事故报告和调查处理条例》，（）级以上人民政府应当严格履行职责，及时、准确地完成事故调查处理工作。',options:[{k:'A',v:'县'},{k:'B',v:'区'},{k:'C',v:'市'},{k:'D',v:'省'}],answer:['A']},
-{id:2,type:'single',stem:'根据《建筑起重机械安全监督管理规定》，依法发包给两个及两个以上施工单位的工程，不同施工单位在同一施工现场使用多台塔式起重机作业时，（）应当协调组织制定防止塔式起重机相互碰撞的安全措施。',options:[{k:'A',v:'安装单位'},{k:'B',v:'使用单位'},{k:'C',v:'建设单位'},{k:'D',v:'出租单位'}],answer:['C']},
-{id:3,type:'single',stem:'根据《建筑起重机械安全监督管理规定》，使用单位在建筑起重机械租期结束后，应当将定期检查、维护和保养记录移交（）。',options:[{k:'A',v:'生产单位'},{k:'B',v:'安装单位'},{k:'C',v:'使用单位'},{k:'D',v:'出租单位'}],answer:['D']},
-{id:4,type:'single',stem:'根据《中华人民共和国行政处罚法》规定，对违法行为给予行政处罚的规定必须（）；未经公布的，不得作为行政处罚的依据。',options:[{k:'A',v:'公开'},{k:'B',v:'公布'},{k:'C',v:'保密'},{k:'D',v:'告知'}],answer:['B']},
-{id:5,type:'single',stem:'根据《建筑起重机械安全监督管理规定》，（）的专业技术人员、专职安全生产管理人员应当进行现场监督，技术负责人应当定期巡查。',options:[{k:'A',v:'生产单位'},{k:'B',v:'安装单位'},{k:'C',v:'使用单位'},{k:'D',v:'监理单位'}],answer:['B']},
-{id:6,type:'single',stem:'根据《建设工程安全生产管理条例》，施工单位的主要负责人、项目经理、专职安全生产管理人员应当经（）或其他有关部门考核合格后方可任职。',options:[{k:'A',v:'安全生产管理机构'},{k:'B',v:'建设行政主管部门'},{k:'C',v:'监察机构'},{k:'D',v:'劳动保障机构'}],answer:['B']},
-{id:7,type:'single',stem:'根据《建设工程安全生产管理条例》，军事建设工程的安全生产管理，按照（）的有关规定执行。',options:[{k:'A',v:'国务院'},{k:'B',v:'中央军事委员会'},{k:'C',v:'建设部'},{k:'D',v:'地方各级人民政府'}],answer:['B']},
-{id:8,type:'single',stem:'根据《建设工程安全生产管理条例》，出租的机械设备和施工机具及配件，应当具有（）①出厂证明、②产品合格证、③生产（制造）许可证。',options:[{k:'A',v:'①②'},{k:'B',v:'①③'},{k:'C',v:'②③'},{k:'D',v:'①②③'}],answer:['C']},
-{id:9,type:'single',stem:'根据《建设工程安全生产管理条例》规定，作业人员应当遵守安全施工的强制性标准、规章制度和操作规程，（）安全防护用具、机械设备等。',options:[{k:'A',v:'正确使用'},{k:'B',v:'正确穿戴'},{k:'C',v:'正确装配'},{k:'D',v:'正确佩戴'}],answer:['A']},
-{id:10,type:'single',stem:'根据《建设工程安全生产管理条例》规定，施工单位应当在施工现场建立（），确定消防安全责任人。',options:[{k:'A',v:'消防安全责任制度'},{k:'B',v:'消防责任制度'},{k:'C',v:'安全责任制度'},{k:'D',v:'消防警示制度'}],answer:['A']},
-{id:11,type:'single',stem:'根据《建设工程安全生产管理条例》规定，施工单位不得在尚未竣工的建筑物内设置（）。',options:[{k:'A',v:'避雨处'},{k:'B',v:'吸烟处'},{k:'C',v:'临时厕所'},{k:'D',v:'员工集体宿舍'}],answer:['D']},
-{id:12,type:'single',stem:'根据《建设工程安全生产管理条例》的规定，（）应当设立安全生产管理机构，配备专职安全生产管理人员。',options:[{k:'A',v:'工程监理单位'},{k:'B',v:'建设单位'},{k:'C',v:'施工单位'},{k:'D',v:'设计单位'}],answer:['C']},
-{id:1803,type:'multi',stem:'重污染天气应急预案启动的，人民政府采取的应急措施有（）。',options:[{k:'A',v:'限制部分机动车行驶'},{k:'B',v:'禁止燃放烟花爆竹'},{k:'C',v:'停止工地土石方作业'},{k:'D',v:'和建筑物拆除施工'},{k:'E',v:'停止露天烧烤'}],answer:['A','B','C','D','E']},
-{id:1804,type:'multi',stem:'制定《中华人民共和国行政处罚法》的目的是（）。',options:[{k:'A',v:'满足宪法要求'},{k:'B',v:'规范行政处罚的设定和实施'},{k:'C',v:'保障和监督行政机关有效实施行政管理'},{k:'D',v:'维护公共利益和社会秩序'},{k:'E',v:'保护公民、法人或者其他组织的合法权益'}],answer:['B','C','D','E']},
-{id:1805,type:'multi',stem:'制定《中华人民共和国大气污染防治法》目的是（）。',options:[{k:'A',v:'保护和改善环境'},{k:'B',v:'防治大气污染'},{k:'C',v:'保障公众健康'},{k:'D',v:'推进生态文明建设'},{k:'E',v:'促进经济社会可持续发展'}],answer:['A','B','C','D','E']},
-{id:1806,type:'multi',stem:'在中华人民共和国境内从事建设工程的（）等有关活动及实施对建设工程安全生产的监督管理，必须遵守《建设工程安全生产管理条例》。',options:[{k:'A',v:'新建'},{k:'B',v:'扩建'},{k:'C',v:'改建'},{k:'D',v:'拆除'},{k:'E',v:'单独的装修工程'}],answer:['A','B','C','D']},
-{id:1809,type:'multi',stem:'根据《建设工程安全生产管理条例》，施工起重机械和整体提升脚手架、模板等自升式架设设施安装完毕后（）。',options:[{k:'A',v:'安装单位应当自检'},{k:'B',v:'出具自检合格证明'},{k:'C',v:'向施工单位进行安全使用说明'},{k:'D',v:'向建设单位进行安全使用说明'},{k:'E',v:'办理验收手续并签字'}],answer:['A','B','C','E']},
-{id:1811,type:'multi',stem:'根据《建设工程安全生产管理条例》，建设单位不得明示或者暗示施工单位购买、租赁、使用不符合安全施工要求的（）。',options:[{k:'A',v:'安全防护用具'},{k:'B',v:'机械设备'},{k:'C',v:'施工机具及配件'},{k:'D',v:'消防设施和器材'},{k:'E',v:'建筑材料'}],answer:['A','B','C','D']},
-{id:2469,type:'judge',stem:'《广东省安全生产条例》规定，生产经营单位的主要负责人和其他责任人不得以任何形式转移安全生产责任。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['A']},
-{id:2470,type:'judge',stem:'《广东省安全生产条例》规定，鼓励生产经营单位设置安全技术负责人或者其他专职安全生产分管负责人。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['B']},
-{id:2471,type:'judge',stem:'《广东省安全生产条例》规定，生产经营单位制定或者修改有关安全生产的规章制度，应当听取工会的意见。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['A']},
-{id:2472,type:'judge',stem:'《广东省安全生产条例》规定，生产经营单位的班组每月至少开展一次安全生产检查，从业人员在每班工作前应当进行本岗位安全检查，确认安全后方可进行操作。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['B']},
-{id:2476,type:'judge',stem:'《建设工程安全生产管理条例》适用于抢险救灾和农民自建低层住宅的安全生产管理。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['B']},
-{id:2478,type:'judge',stem:'《中华人民共和国安全生产法》规定，生产经营单位发生生产安全事故后，事故现场有关人员应当采取相应的处理措施后，向本单位负责人报告。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['B']}
+{id:1,type:'single',stem:'请点击右上角【导入题库】按钮，选择你的PDF文件或JSON文件以加载完整题库。',options:[{k:'A',v:'我知道了'},{k:'B',v:'关闭'}],answer:['A']}
 ];
 
 const S={bank:[],answers:{},favs:new Set(),view:'home',queue:[],idx:0,picked:[],revealed:false,exam:null,result:null};
@@ -84,7 +65,7 @@ const $=id=>document.getElementById(id);
 const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!==undefined)e.innerHTML=h;return e};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let toastT;
-function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),1800)}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),2000)}
 
 function initBank(){
   try{const s=localStorage.getItem('b_bank');if(s){const a=JSON.parse(s);if(Array.isArray(a)&&a.length){S.bank=a;return}}}
@@ -117,6 +98,76 @@ function stats(){
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function same(a,b){if(a.length!==b.length)return false;const s=new Set(a);return b.every(x=>s.has(x))}
 
+async function parsePDF(file) {
+  const buffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+  let fullText = '';
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    let lastY = null;
+    let pageText = '';
+    for (const item of content.items) {
+      if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) pageText += '\n';
+      pageText += item.str;
+      lastY = item.transform[5];
+    }
+    fullText += pageText + '\n';
+  }
+  
+  fullText = fullText.replace(/=====\s*Page\s*\d+.*?=====/g, '').replace(/广东省建筑施工企业项目负责人.*?题库/g, '');
+  const lines = fullText.split('\n').map(l => l.trim()).filter(l => l);
+  const qs = [];
+  let section = 'single';
+  let cur = null;
+  
+  const RE_SEC = /^[一二三四]、\s*(单选题|多选题|判断题)/;
+  const RE_Q = /^(\d{1,4})[.、]\s*(.*)/;
+  const RE_ANS = /^正确答案[:：]?\s*([A-E]+)/;
+
+  for (let i = 0; i < lines.length; i++) {
+    let ln = lines[i];
+    let mSec = ln.match(RE_SEC);
+    if (mSec) {
+      if (cur) { finishQuestion(cur, qs); cur = null; }
+      section = mSec[1] === '单选题' ? 'single' : mSec[1] === '多选题' ? 'multi' : 'judge';
+      continue;
+    }
+    let mAns = ln.match(RE_ANS);
+    if (mAns) {
+      if (cur) { cur.answer = mAns[1]; finishQuestion(cur, qs); cur = null; }
+      continue;
+    }
+    let mQ = ln.match(RE_Q);
+    if (mQ) {
+      if (cur) { finishQuestion(cur, qs); cur = null; }
+      cur = { id: parseInt(mQ[1]), type: section, stem: mQ[2], options: [], answer: '' };
+      continue;
+    }
+    if (cur) {
+      if (/^[A-E][.、]/.test(ln)) {
+        const parts = ln.split(/(?=[A-E][.、])/);
+        parts.forEach(p => {
+          const m = p.match(/^([A-E])[.、]\s*(.*)/);
+          if (m) cur.options.push({ k: m[1], v: m[2].trim() });
+        });
+      } else {
+        if (cur.options.length > 0) cur.options[cur.options.length - 1].v += ln;
+        else cur.stem += ln;
+      }
+    }
+  }
+  if (cur) finishQuestion(cur, qs);
+  return qs;
+}
+function finishQuestion(q, arr) {
+  if (!q.answer) return;
+  if (q.type === 'judge' && q.options.length === 0) q.options = [{k:'A',v:'正确'},{k:'B',v:'错误'}];
+  if (q.options.length === 0) return;
+  q.answer = q.answer.split('').sort();
+  arr.push(q);
+}
+
 function render(){
   document.querySelectorAll('.bar').forEach(n=>n.remove());
   clearInterval(window._t);
@@ -131,7 +182,7 @@ function home(){
   $('app').innerHTML=`
     <div class="top">
       <div><h1>安考刷题</h1><div class="muted">共 ${st.total} 题</div></div>
-      <button class="g" style="min-height:36px;padding:0 12px;font-size:13px" id="imp">导入</button>
+      <button class="g" style="min-height:36px;padding:0 12px;font-size:13px" id="imp">导入题库</button>
     </div>
     <div class="card">
       <div class="st">
@@ -151,25 +202,44 @@ function home(){
       <div class="mi" data-a="x"><span class="i">📕</span><div class="n">错题本</div><div class="d">${st.wrong}题</div></div>
       <div class="mi" data-a="f"><span class="i">⭐</span><div class="n">收藏夹</div><div class="d">${st.fav}题</div></div>
       <div class="mi" data-a="e"><span class="i">📝</span><div class="n">模拟考试</div><div class="d">100题/90分钟</div></div>
-    </div>`;
+    </div>
+    <div class="muted c" style="margin-top:10px;font-size:12px">支持直接导入 PDF 或 JSON 格式题库</div>`;
+  
   $('imp').onclick=()=>{
     const i=document.createElement('input');
-    i.type='file';i.accept='.json';
-    i.onchange=e=>{
+    i.type='file';
+    // 不限制格式，允许选择任意文件
+    i.accept='*/*'; 
+    i.onchange=async e=>{
       const f=e.target.files[0];if(!f)return;
-      const r=new FileReader();
-      r.onload=ev=>{
+      const fname = f.name.toLowerCase();
+      
+      if(fname.endsWith('.pdf')){
+        toast('正在解析PDF，请稍候...');
         try{
-          const a=JSON.parse(ev.target.result);
-          if(!Array.isArray(a)||!a.length)throw new Error('空');
-          localStorage.setItem('b_bank',JSON.stringify(a));
-          S.bank=a;toast('已导入'+a.length+'题');S.view='home';render();
-        }catch(x){toast('导入失败')}
-      };
-      r.readAsText(f);
+          const qs=await parsePDF(f);
+          if(!qs.length) throw new Error('未识别到题目');
+          localStorage.setItem('b_bank',JSON.stringify(qs));
+          S.bank=qs; toast('成功导入 '+qs.length+' 题'); S.view='home'; render();
+        }catch(err){ alert('解析失败: '+err.message); }
+      } else if(fname.endsWith('.json')) {
+        const r=new FileReader();
+        r.onload=ev=>{
+          try{
+            const a=JSON.parse(ev.target.result);
+            if(!Array.isArray(a)||!a.length)throw new Error('空');
+            localStorage.setItem('b_bank',JSON.stringify(a));
+            S.bank=a;toast('已导入'+a.length+'题');S.view='home';render();
+          }catch(x){toast('JSON格式不正确')}
+        };
+        r.readAsText(f);
+      } else {
+        toast('请选择 PDF 或 JSON 文件');
+      }
     };
     i.click();
   };
+  
   document.querySelectorAll('.mi').forEach(n=>{
     n.onclick=()=>{
       const a=n.dataset.a;
@@ -185,10 +255,7 @@ function home(){
   });
 }
 
-function startQ(list){
-  if(!list.length)return toast('无题');
-  S.queue=list;S.idx=0;S.picked=[];S.revealed=false;S.exam=null;S.view='quiz';render();
-}
+function startQ(list){if(!list.length)return toast('无题');S.queue=list;S.idx=0;S.picked=[];S.revealed=false;S.exam=null;S.view='quiz';render();}
 
 function quiz(){
   const q=S.queue[S.idx];
@@ -223,31 +290,18 @@ function quiz(){
     $('ana').innerHTML=`<div class="ana"><b style="color:${ok?'#2e7d32':'#d32f2f'}">${ok?'✅ 回答正确':'❌ 回答错误'}</b><div style="margin-top:6px">正确答案：<b>${q.answer.join('')}</b>${S.picked.length?` ｜ 你的：<b>${S.picked.join('')||'未选'}</b>`:''}</div></div>`;
   }
   const bar=el('div','bar');
-  const p=el('button','g','上一题');p.disabled=S.idx===0;
-  p.onclick=()=>{S.idx--;S.picked=[];S.revealed=false;quiz()};
+  const p=el('button','g','上一题');p.disabled=S.idx===0;p.onclick=()=>{S.idx--;S.picked=[];S.revealed=false;quiz()};
   const n=el('button','',S.revealed?(S.idx===S.queue.length-1?'完成':'下一题'):'提交');
   n.onclick=()=>{
-    if(!S.revealed){
-      if(!S.picked.length)return toast('请选择');
-      S.revealed=true;rec(q.id,same(S.picked,q.answer));quiz();
-    }else{
-      if(S.idx===S.queue.length-1){toast('完成🎉');S.view='home';return render()}
-      S.idx++;S.picked=[];S.revealed=false;quiz();
-    }
+    if(!S.revealed){if(!S.picked.length)return toast('请选择');S.revealed=true;rec(q.id,same(S.picked,q.answer));quiz()}
+    else{if(S.idx===S.queue.length-1){toast('完成🎉');S.view='home';return render()}S.idx++;S.picked=[];S.revealed=false;quiz()}
   };
-  const f=el('button','g',S.favs.has(q.id)?'⭐':'☆');f.style.flex='0 0 56px';
-  f.onclick=()=>{fav(q.id);quiz()};
-  const b=el('button','w','退出');b.style.flex='0 0 70px';
-  b.onclick=()=>{S.view='home';render()};
-  bar.append(p,n,f,b);
-  document.body.appendChild(bar);
+  const f=el('button','g',S.favs.has(q.id)?'⭐':'☆');f.style.flex='0 0 56px';f.onclick=()=>{fav(q.id);quiz()};
+  const b=el('button','w','退出');b.style.flex='0 0 70px';b.onclick=()=>{S.view='home';render()};
+  bar.append(p,n,f,b);document.body.appendChild(bar);
 }
 
-function startExam(){
-  const n=Math.min(100,S.bank.length);
-  S.exam={list:shuffle([...S.bank]).slice(0,n),idx:0,picked:[],start:Date.now()};
-  S.view='exam';render();
-}
+function startExam(){const n=Math.min(100,S.bank.length);S.exam={list:shuffle([...S.bank]).slice(0,n),idx:0,picked:[],start:Date.now()};S.view='exam';render()}
 function exam(){
   const E=S.exam;if(!E)return(S.view='home',render());
   if(E.idx>=E.list.length)return endExam();
@@ -263,37 +317,21 @@ function exam(){
   q.options.forEach(o=>{
     const d=el('div','o'+(ch.includes(o.k)?' sel':''));
     d.innerHTML=`<span class="k">${o.k}</span><span class="v">${esc(o.v)}</span>`;
-    d.onclick=()=>{
-      if(m){const i=ch.indexOf(o.k);i>=0?ch.splice(i,1):ch.push(o.k);d.classList.toggle('sel')}
-      else{E.picked[E.idx]=[o.k];document.querySelectorAll('.o').forEach(x=>x.classList.remove('sel'));d.classList.add('sel')}
-      E.picked[E.idx]=ch;
-    };
+    d.onclick=()=>{if(m){const i=ch.indexOf(o.k);i>=0?ch.splice(i,1):ch.push(o.k);d.classList.toggle('sel')}else{E.picked[E.idx]=[o.k];document.querySelectorAll('.o').forEach(x=>x.classList.remove('sel'));d.classList.add('sel')}E.picked[E.idx]=ch};
     $('opts').appendChild(d);
   });
   const bar=el('div','bar');
-  const p=el('button','g','上一题');p.disabled=E.idx===0;
-  p.onclick=()=>{E.idx--;exam()};
-  const n=el('button','',E.idx===E.list.length-1?'交卷':'下一题');
-  n.onclick=()=>{if(E.idx===E.list.length-1)return endExam();E.idx++;exam()};
-  const b=el('button','w','退出');b.style.flex='0 0 70px';
-  b.onclick=()=>{if(confirm('退出考试？')){S.exam=null;S.view='home';render()}};
-  bar.append(p,n,b);
-  document.body.appendChild(bar);
-  const tick=()=>{
-    const c=$('cl');if(!c||!S.exam)return;
-    const l=Math.max(0,5400-Math.floor((Date.now()-E.start)/1000));
-    c.textContent=`${String(Math.floor(l/60)).padStart(2,'0')}:${String(l%60).padStart(2,'0')}`;
-    if(l===0)endExam();
-  };
+  const p=el('button','g','上一题');p.disabled=E.idx===0;p.onclick=()=>{E.idx--;exam()};
+  const n=el('button','',E.idx===E.list.length-1?'交卷':'下一题');n.onclick=()=>{if(E.idx===E.list.length-1)return endExam();E.idx++;exam()};
+  const b=el('button','w','退出');b.style.flex='0 0 70px';b.onclick=()=>{if(confirm('退出考试？')){S.exam=null;S.view='home';render()}};
+  bar.append(p,n,b);document.body.appendChild(bar);
+  const tick=()=>{const c=$('cl');if(!c||!S.exam)return;const l=Math.max(0,5400-Math.floor((Date.now()-E.start)/1000));c.textContent=`${String(Math.floor(l/60)).padStart(2,'0')}:${String(l%60).padStart(2,'0')}`;if(l===0)endExam()};
   tick();window._t=setInterval(tick,1000);
 }
 function endExam(){
-  clearInterval(window._t);
-  const E=S.exam;if(!E)return;
-  let r=0;
+  clearInterval(window._t);const E=S.exam;if(!E)return;let r=0;
   E.list.forEach((q,i)=>{const ok=same(E.picked[i]||[],q.answer);if(ok)r++;rec(q.id,ok)});
-  S.result={right:r,total:E.list.length,score:Math.round(r/E.list.length*100)};
-  S.exam=null;S.view='result';render();
+  S.result={right:r,total:E.list.length,score:Math.round(r/E.list.length*100)};S.exam=null;S.view='result';render();
 }
 function result(){
   const r=S.result||{right:0,total:0,score:0};
@@ -314,12 +352,7 @@ function result(){
 }
 
 initBank();initProgress();render();
-let lt=0;
-document.addEventListener('touchend',e=>{
-  const n=Date.now();
-  if(n-lt<300)e.preventDefault();
-  lt=n;
-},{passive:false});
+let lt=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-lt<300)e.preventDefault();lt=n},{passive:false});
 </script>
 </body>
 </html>
