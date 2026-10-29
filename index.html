@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="安考刷题">
+<meta name="theme-color" content="#1e88e5">
+<title>安考刷题</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#f4f6f9;color:#1d2129;font:16px/1.6 -apple-system,"PingFang SC",sans-serif;padding:calc(env(safe-area-inset-top) + 12px) calc(env(safe-area-inset-right) + 12px) calc(env(safe-area-inset-bottom) + 80px) calc(env(safe-area-inset-left) + 12px)}
+.card{background:#fff;border-radius:14px;padding:18px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+h1{font-size:22px;margin:0 0 4px}
+.muted{color:#86909c;font-size:14px}
+.row{display:flex;gap:8px}.grow{flex:1}
+button{border:0;border-radius:12px;min-height:48px;padding:0 16px;font-size:16px;font-weight:600;background:#1e88e5;color:#fff;font-family:inherit;-webkit-appearance:none;cursor:pointer;transition:.1s}
+button:active{transform:scale(.97);opacity:.9}
+button.g{background:#eef4fb;color:#1e88e5}
+button.w{background:#fdecec;color:#d32f2f}
+button:disabled{opacity:.4;pointer-events:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mi{background:#fff;border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.mi:active{transform:scale(.96)}
+.mi .i{font-size:26px;display:block;margin-bottom:4px}
+.mi .n{font-size:15px;font-weight:600}
+.mi .d{font-size:12px;color:#86909c;margin-top:2px}
+.s{font-size:17px;font-weight:600;line-height:1.7;margin-bottom:16px;word-break:break-word}
+.o{display:flex;gap:10px;padding:14px;border:1.5px solid #e5e6eb;border-radius:12px;margin-bottom:8px;cursor:pointer;background:#fff}
+.o .k{width:26px;height:26px;flex:0 0 26px;border-radius:50%;background:#eef1f5;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-top:1px}
+.o .v{flex:1;word-break:break-word}
+.o.sel{border-color:#1e88e5;background:#f0f7ff}.o.sel .k{background:#1e88e5;color:#fff}
+.o.ok{border-color:#2e7d32;background:#eefaf1}.o.ok .k{background:#2e7d32;color:#fff}
+.o.no{border-color:#d32f2f;background:#fdf1f1}.o.no .k{background:#d32f2f;color:#fff}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e5e6eb;display:flex;gap:8px;padding:10px calc(env(safe-area-inset-right) + 12px) calc(env(safe-area-inset-bottom) + 10px) calc(env(safe-area-inset-left) + 12px);z-index:10}
+.bar button{flex:1}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.p{height:5px;background:#e5e8ec;border-radius:3px;overflow:hidden;margin-bottom:14px}
+.p>i{display:block;height:100%;background:#1e88e5;transition:width .3s}
+.tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:8px;background:#eef4fb;color:#1e88e5;font-weight:600}
+.ana{background:#f7f9fc;border-left:3px solid #1e88e5;padding:12px 14px;border-radius:8px;margin-top:14px;font-size:15px}
+.st{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.st b{display:block;font-size:24px;color:#1e88e5}
+.st span{font-size:13px;color:#86909c}
+.c{text-align:center}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 20px);transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:10px 20px;border-radius:22px;font-size:15px;z-index:99;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap;max-width:85vw;overflow:hidden;text-overflow:ellipsis}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast"></div>
+<script>
+const SAMPLE=[
+{id:1,type:'single',stem:'根据《生产安全事故报告和调查处理条例》，（）级以上人民政府应当严格履行职责，及时、准确地完成事故调查处理工作。',options:[{k:'A',v:'县'},{k:'B',v:'区'},{k:'C',v:'市'},{k:'D',v:'省'}],answer:['A']},
+{id:2,type:'single',stem:'根据《建筑起重机械安全监督管理规定》，依法发包给两个及两个以上施工单位的工程，不同施工单位在同一施工现场使用多台塔式起重机作业时，（）应当协调组织制定防止塔式起重机相互碰撞的安全措施。',options:[{k:'A',v:'安装单位'},{k:'B',v:'使用单位'},{k:'C',v:'建设单位'},{k:'D',v:'出租单位'}],answer:['C']},
+{id:3,type:'single',stem:'根据《建筑起重机械安全监督管理规定》，使用单位在建筑起重机械租期结束后，应当将定期检查、维护和保养记录移交（）。',options:[{k:'A',v:'生产单位'},{k:'B',v:'安装单位'},{k:'C',v:'使用单位'},{k:'D',v:'出租单位'}],answer:['D']},
+{id:4,type:'single',stem:'根据《中华人民共和国行政处罚法》规定，对违法行为给予行政处罚的规定必须（）；未经公布的，不得作为行政处罚的依据。',options:[{k:'A',v:'公开'},{k:'B',v:'公布'},{k:'C',v:'保密'},{k:'D',v:'告知'}],answer:['B']},
+{id:5,type:'single',stem:'根据《建筑起重机械安全监督管理规定》，（）的专业技术人员、专职安全生产管理人员应当进行现场监督，技术负责人应当定期巡查。',options:[{k:'A',v:'生产单位'},{k:'B',v:'安装单位'},{k:'C',v:'使用单位'},{k:'D',v:'监理单位'}],answer:['B']},
+{id:6,type:'single',stem:'根据《建设工程安全生产管理条例》，施工单位的主要负责人、项目经理、专职安全生产管理人员应当经（）或其他有关部门考核合格后方可任职。',options:[{k:'A',v:'安全生产管理机构'},{k:'B',v:'建设行政主管部门'},{k:'C',v:'监察机构'},{k:'D',v:'劳动保障机构'}],answer:['B']},
+{id:7,type:'single',stem:'根据《建设工程安全生产管理条例》，军事建设工程的安全生产管理，按照（）的有关规定执行。',options:[{k:'A',v:'国务院'},{k:'B',v:'中央军事委员会'},{k:'C',v:'建设部'},{k:'D',v:'地方各级人民政府'}],answer:['B']},
+{id:8,type:'single',stem:'根据《建设工程安全生产管理条例》，出租的机械设备和施工机具及配件，应当具有（）①出厂证明、②产品合格证、③生产（制造）许可证。',options:[{k:'A',v:'①②'},{k:'B',v:'①③'},{k:'C',v:'②③'},{k:'D',v:'①②③'}],answer:['C']},
+{id:9,type:'single',stem:'根据《建设工程安全生产管理条例》规定，作业人员应当遵守安全施工的强制性标准、规章制度和操作规程，（）安全防护用具、机械设备等。',options:[{k:'A',v:'正确使用'},{k:'B',v:'正确穿戴'},{k:'C',v:'正确装配'},{k:'D',v:'正确佩戴'}],answer:['A']},
+{id:10,type:'single',stem:'根据《建设工程安全生产管理条例》规定，施工单位应当在施工现场建立（），确定消防安全责任人。',options:[{k:'A',v:'消防安全责任制度'},{k:'B',v:'消防责任制度'},{k:'C',v:'安全责任制度'},{k:'D',v:'消防警示制度'}],answer:['A']},
+{id:11,type:'single',stem:'根据《建设工程安全生产管理条例》规定，施工单位不得在尚未竣工的建筑物内设置（）。',options:[{k:'A',v:'避雨处'},{k:'B',v:'吸烟处'},{k:'C',v:'临时厕所'},{k:'D',v:'员工集体宿舍'}],answer:['D']},
+{id:12,type:'single',stem:'根据《建设工程安全生产管理条例》的规定，（）应当设立安全生产管理机构，配备专职安全生产管理人员。',options:[{k:'A',v:'工程监理单位'},{k:'B',v:'建设单位'},{k:'C',v:'施工单位'},{k:'D',v:'设计单位'}],answer:['C']},
+{id:1803,type:'multi',stem:'重污染天气应急预案启动的，人民政府采取的应急措施有（）。',options:[{k:'A',v:'限制部分机动车行驶'},{k:'B',v:'禁止燃放烟花爆竹'},{k:'C',v:'停止工地土石方作业'},{k:'D',v:'和建筑物拆除施工'},{k:'E',v:'停止露天烧烤'}],answer:['A','B','C','D','E']},
+{id:1804,type:'multi',stem:'制定《中华人民共和国行政处罚法》的目的是（）。',options:[{k:'A',v:'满足宪法要求'},{k:'B',v:'规范行政处罚的设定和实施'},{k:'C',v:'保障和监督行政机关有效实施行政管理'},{k:'D',v:'维护公共利益和社会秩序'},{k:'E',v:'保护公民、法人或者其他组织的合法权益'}],answer:['B','C','D','E']},
+{id:1805,type:'multi',stem:'制定《中华人民共和国大气污染防治法》目的是（）。',options:[{k:'A',v:'保护和改善环境'},{k:'B',v:'防治大气污染'},{k:'C',v:'保障公众健康'},{k:'D',v:'推进生态文明建设'},{k:'E',v:'促进经济社会可持续发展'}],answer:['A','B','C','D','E']},
+{id:1806,type:'multi',stem:'在中华人民共和国境内从事建设工程的（）等有关活动及实施对建设工程安全生产的监督管理，必须遵守《建设工程安全生产管理条例》。',options:[{k:'A',v:'新建'},{k:'B',v:'扩建'},{k:'C',v:'改建'},{k:'D',v:'拆除'},{k:'E',v:'单独的装修工程'}],answer:['A','B','C','D']},
+{id:1809,type:'multi',stem:'根据《建设工程安全生产管理条例》，施工起重机械和整体提升脚手架、模板等自升式架设设施安装完毕后（）。',options:[{k:'A',v:'安装单位应当自检'},{k:'B',v:'出具自检合格证明'},{k:'C',v:'向施工单位进行安全使用说明'},{k:'D',v:'向建设单位进行安全使用说明'},{k:'E',v:'办理验收手续并签字'}],answer:['A','B','C','E']},
+{id:1811,type:'multi',stem:'根据《建设工程安全生产管理条例》，建设单位不得明示或者暗示施工单位购买、租赁、使用不符合安全施工要求的（）。',options:[{k:'A',v:'安全防护用具'},{k:'B',v:'机械设备'},{k:'C',v:'施工机具及配件'},{k:'D',v:'消防设施和器材'},{k:'E',v:'建筑材料'}],answer:['A','B','C','D']},
+{id:2469,type:'judge',stem:'《广东省安全生产条例》规定，生产经营单位的主要负责人和其他责任人不得以任何形式转移安全生产责任。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['A']},
+{id:2470,type:'judge',stem:'《广东省安全生产条例》规定，鼓励生产经营单位设置安全技术负责人或者其他专职安全生产分管负责人。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['B']},
+{id:2471,type:'judge',stem:'《广东省安全生产条例》规定，生产经营单位制定或者修改有关安全生产的规章制度，应当听取工会的意见。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['A']},
+{id:2472,type:'judge',stem:'《广东省安全生产条例》规定，生产经营单位的班组每月至少开展一次安全生产检查，从业人员在每班工作前应当进行本岗位安全检查，确认安全后方可进行操作。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['B']},
+{id:2476,type:'judge',stem:'《建设工程安全生产管理条例》适用于抢险救灾和农民自建低层住宅的安全生产管理。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['B']},
+{id:2478,type:'judge',stem:'《中华人民共和国安全生产法》规定，生产经营单位发生生产安全事故后，事故现场有关人员应当采取相应的处理措施后，向本单位负责人报告。',options:[{k:'A',v:'正确'},{k:'B',v:'错误'}],answer:['B']}
+];
+
+const S={bank:[],answers:{},favs:new Set(),view:'home',queue:[],idx:0,picked:[],revealed:false,exam:null,result:null};
+const $=id=>document.getElementById(id);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!==undefined)e.innerHTML=h;return e};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastT;
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),1800)}
+
+function initBank(){
+  try{const s=localStorage.getItem('b_bank');if(s){const a=JSON.parse(s);if(Array.isArray(a)&&a.length){S.bank=a;return}}}
+  catch(e){}
+  S.bank=SAMPLE;
+}
+function initProgress(){
+  try{S.answers=JSON.parse(localStorage.getItem('b_ans')||'{}');S.favs=new Set(JSON.parse(localStorage.getItem('b_fav')||'[]'))}
+  catch(e){S.answers={};S.favs=new Set()}
+}
+function saveProgress(){
+  localStorage.setItem('b_ans',JSON.stringify(S.answers));
+  localStorage.setItem('b_fav',JSON.stringify([...S.favs]));
+}
+function rec(id,ok){
+  const o=S.answers[id]||{w:0};
+  S.answers[id]={c:ok,w:ok?o.w:(o.w||0)+1,t:Date.now()};
+  saveProgress();
+}
+function fav(id){
+  if(S.favs.has(id)){S.favs.delete(id);toast('已取消收藏')}
+  else{S.favs.add(id);toast('已收藏')}
+  saveProgress();
+}
+function stats(){
+  let d=0,r=0,w=0;
+  for(const k in S.answers){d++;S.answers[k].c?r++:w++}
+  return{total:S.bank.length,done:d,right:r,wrong:w,fav:S.favs.size,rate:d?Math.round(r/d*100):0}
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function same(a,b){if(a.length!==b.length)return false;const s=new Set(a);return b.every(x=>s.has(x))}
+
+function render(){
+  document.querySelectorAll('.bar').forEach(n=>n.remove());
+  clearInterval(window._t);
+  if(S.view==='home')home();
+  else if(S.view==='quiz')quiz();
+  else if(S.view==='exam')exam();
+  else if(S.view==='result')result();
+}
+
+function home(){
+  const st=stats();
+  $('app').innerHTML=`
+    <div class="top">
+      <div><h1>安考刷题</h1><div class="muted">共 ${st.total} 题</div></div>
+      <button class="g" style="min-height:36px;padding:0 12px;font-size:13px" id="imp">导入</button>
+    </div>
+    <div class="card">
+      <div class="st">
+        <div><b>${st.done}</b><span>已做</span></div>
+        <div><b>${st.rate}%</b><span>正确率</span></div>
+        <div><b>${st.wrong}</b><span>错题</span></div>
+      </div>
+      <div style="height:12px"></div>
+      <div class="p"><i style="width:${st.total?st.done/st.total*100:0}%"></i></div>
+    </div>
+    <div class="grid">
+      <div class="mi" data-a="o"><span class="i">📖</span><div class="n">顺序练习</div><div class="d">从第1题开始</div></div>
+      <div class="mi" data-a="r"><span class="i">🎲</span><div class="n">随机练习</div><div class="d">打乱抽题</div></div>
+      <div class="mi" data-a="1"><span class="i">①</span><div class="n">单选题</div><div class="d">${S.bank.filter(q=>q.type==='single').length}题</div></div>
+      <div class="mi" data-a="2"><span class="i">②</span><div class="n">多选题</div><div class="d">${S.bank.filter(q=>q.type==='multi').length}题</div></div>
+      <div class="mi" data-a="3"><span class="i">③</span><div class="n">判断题</div><div class="d">${S.bank.filter(q=>q.type==='judge').length}题</div></div>
+      <div class="mi" data-a="x"><span class="i">📕</span><div class="n">错题本</div><div class="d">${st.wrong}题</div></div>
+      <div class="mi" data-a="f"><span class="i">⭐</span><div class="n">收藏夹</div><div class="d">${st.fav}题</div></div>
+      <div class="mi" data-a="e"><span class="i">📝</span><div class="n">模拟考试</div><div class="d">100题/90分钟</div></div>
+    </div>`;
+  $('imp').onclick=()=>{
+    const i=document.createElement('input');
+    i.type='file';i.accept='.json';
+    i.onchange=e=>{
+      const f=e.target.files[0];if(!f)return;
+      const r=new FileReader();
+      r.onload=ev=>{
+        try{
+          const a=JSON.parse(ev.target.result);
+          if(!Array.isArray(a)||!a.length)throw new Error('空');
+          localStorage.setItem('b_bank',JSON.stringify(a));
+          S.bank=a;toast('已导入'+a.length+'题');S.view='home';render();
+        }catch(x){toast('导入失败')}
+      };
+      r.readAsText(f);
+    };
+    i.click();
+  };
+  document.querySelectorAll('.mi').forEach(n=>{
+    n.onclick=()=>{
+      const a=n.dataset.a;
+      if(a==='e')return startExam();
+      if(a==='o')return startQ(S.bank);
+      if(a==='r')return startQ(shuffle([...S.bank]));
+      if(a==='1')return startQ(S.bank.filter(q=>q.type==='single'));
+      if(a==='2')return startQ(S.bank.filter(q=>q.type==='multi'));
+      if(a==='3')return startQ(S.bank.filter(q=>q.type==='judge'));
+      if(a==='x'){const l=S.bank.filter(q=>S.answers[q.id]&&!S.answers[q.id].c);if(!l.length)return toast('还没有错题');return startQ(l)}
+      if(a==='f'){const l=S.bank.filter(q=>S.favs.has(q.id));if(!l.length)return toast('收藏夹空的');return startQ(l)}
+    };
+  });
+}
+
+function startQ(list){
+  if(!list.length)return toast('无题');
+  S.queue=list;S.idx=0;S.picked=[];S.revealed=false;S.exam=null;S.view='quiz';render();
+}
+
+function quiz(){
+  const q=S.queue[S.idx];
+  if(!q){toast('完成🎉');S.view='home';return render()}
+  const m=q.type==='multi',as=new Set(q.answer);
+  $('app').innerHTML=`
+    <div class="top">
+      <span class="tag">${q.type==='single'?'单选':q.type==='multi'?'多选':'判断'}</span>
+      <span class="muted">${S.idx+1}/${S.queue.length}</span>
+    </div>
+    <div class="p"><i style="width:${(S.idx+1)/S.queue.length*100}%"></i></div>
+    <div class="card">
+      <div class="s">${q.id}. ${esc(q.stem)}</div>
+      <div id="opts"></div>
+      <div id="ana"></div>
+    </div>`;
+  const box=$('opts');
+  q.options.forEach(o=>{
+    const d=el('div','o');d.dataset.k=o.k;
+    d.innerHTML=`<span class="k">${o.k}</span><span class="v">${esc(o.v)}</span>`;
+    if(S.revealed){if(as.has(o.k))d.classList.add('ok');else if(S.picked.includes(o.k))d.classList.add('no')}
+    else if(S.picked.includes(o.k))d.classList.add('sel');
+    d.onclick=()=>{
+      if(S.revealed)return;
+      if(m){const i=S.picked.indexOf(o.k);i>=0?S.picked.splice(i,1):S.picked.push(o.k);d.classList.toggle('sel')}
+      else{S.picked=[o.k];box.querySelectorAll('.o').forEach(x=>x.classList.remove('sel'));d.classList.add('sel')}
+    };
+    box.appendChild(d);
+  });
+  if(S.revealed){
+    const ok=same(S.picked,q.answer);
+    $('ana').innerHTML=`<div class="ana"><b style="color:${ok?'#2e7d32':'#d32f2f'}">${ok?'✅ 回答正确':'❌ 回答错误'}</b><div style="margin-top:6px">正确答案：<b>${q.answer.join('')}</b>${S.picked.length?` ｜ 你的：<b>${S.picked.join('')||'未选'}</b>`:''}</div></div>`;
+  }
+  const bar=el('div','bar');
+  const p=el('button','g','上一题');p.disabled=S.idx===0;
+  p.onclick=()=>{S.idx--;S.picked=[];S.revealed=false;quiz()};
+  const n=el('button','',S.revealed?(S.idx===S.queue.length-1?'完成':'下一题'):'提交');
+  n.onclick=()=>{
+    if(!S.revealed){
+      if(!S.picked.length)return toast('请选择');
+      S.revealed=true;rec(q.id,same(S.picked,q.answer));quiz();
+    }else{
+      if(S.idx===S.queue.length-1){toast('完成🎉');S.view='home';return render()}
+      S.idx++;S.picked=[];S.revealed=false;quiz();
+    }
+  };
+  const f=el('button','g',S.favs.has(q.id)?'⭐':'☆');f.style.flex='0 0 56px';
+  f.onclick=()=>{fav(q.id);quiz()};
+  const b=el('button','w','退出');b.style.flex='0 0 70px';
+  b.onclick=()=>{S.view='home';render()};
+  bar.append(p,n,f,b);
+  document.body.appendChild(bar);
+}
+
+function startExam(){
+  const n=Math.min(100,S.bank.length);
+  S.exam={list:shuffle([...S.bank]).slice(0,n),idx:0,picked:[],start:Date.now()};
+  S.view='exam';render();
+}
+function exam(){
+  const E=S.exam;if(!E)return(S.view='home',render());
+  if(E.idx>=E.list.length)return endExam();
+  const q=E.list[E.idx],m=q.type==='multi';
+  $('app').innerHTML=`
+    <div class="top">
+      <span class="tag">模拟考试</span>
+      <span class="muted">${E.idx+1}/${E.list.length} · <span id="cl">--:--</span></span>
+    </div>
+    <div class="p"><i style="width:${(E.idx+1)/E.list.length*100}%"></i></div>
+    <div class="card"><div class="s">${q.id}. ${esc(q.stem)}</div><div id="opts"></div></div>`;
+  const ch=E.picked[E.idx]||[];
+  q.options.forEach(o=>{
+    const d=el('div','o'+(ch.includes(o.k)?' sel':''));
+    d.innerHTML=`<span class="k">${o.k}</span><span class="v">${esc(o.v)}</span>`;
+    d.onclick=()=>{
+      if(m){const i=ch.indexOf(o.k);i>=0?ch.splice(i,1):ch.push(o.k);d.classList.toggle('sel')}
+      else{E.picked[E.idx]=[o.k];document.querySelectorAll('.o').forEach(x=>x.classList.remove('sel'));d.classList.add('sel')}
+      E.picked[E.idx]=ch;
+    };
+    $('opts').appendChild(d);
+  });
+  const bar=el('div','bar');
+  const p=el('button','g','上一题');p.disabled=E.idx===0;
+  p.onclick=()=>{E.idx--;exam()};
+  const n=el('button','',E.idx===E.list.length-1?'交卷':'下一题');
+  n.onclick=()=>{if(E.idx===E.list.length-1)return endExam();E.idx++;exam()};
+  const b=el('button','w','退出');b.style.flex='0 0 70px';
+  b.onclick=()=>{if(confirm('退出考试？')){S.exam=null;S.view='home';render()}};
+  bar.append(p,n,b);
+  document.body.appendChild(bar);
+  const tick=()=>{
+    const c=$('cl');if(!c||!S.exam)return;
+    const l=Math.max(0,5400-Math.floor((Date.now()-E.start)/1000));
+    c.textContent=`${String(Math.floor(l/60)).padStart(2,'0')}:${String(l%60).padStart(2,'0')}`;
+    if(l===0)endExam();
+  };
+  tick();window._t=setInterval(tick,1000);
+}
+function endExam(){
+  clearInterval(window._t);
+  const E=S.exam;if(!E)return;
+  let r=0;
+  E.list.forEach((q,i)=>{const ok=same(E.picked[i]||[],q.answer);if(ok)r++;rec(q.id,ok)});
+  S.result={right:r,total:E.list.length,score:Math.round(r/E.list.length*100)};
+  S.exam=null;S.view='result';render();
+}
+function result(){
+  const r=S.result||{right:0,total:0,score:0};
+  $('app').innerHTML=`
+    <div class="card c">
+      <div style="font-size:64px;font-weight:800;color:${r.score>=60?'#2e7d32':'#d32f2f'};line-height:1">${r.score}</div>
+      <div class="muted" style="margin-top:6px">模拟考试成绩</div>
+      <div style="height:20px"></div>
+      <div class="st">
+        <div><b style="color:#2e7d32">${r.right}</b><span>答对</span></div>
+        <div><b style="color:#d32f2f">${r.total-r.right}</b><span>答错</span></div>
+        <div><b>${r.total}</b><span>总题</span></div>
+      </div>
+      <div style="height:24px"></div>
+      <button style="width:100%" id="h">返回首页</button>
+    </div>`;
+  $('h').onclick=()=>{S.view='home';render()};
+}
+
+initBank();initProgress();render();
+let lt=0;
+document.addEventListener('touchend',e=>{
+  const n=Date.now();
+  if(n-lt<300)e.preventDefault();
+  lt=n;
+},{passive:false});
+</script>
+</body>
+</html>
